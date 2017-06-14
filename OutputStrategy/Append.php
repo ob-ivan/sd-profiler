@@ -2,18 +2,16 @@
 
 class SD_Profiler_OutputStrategy_Append implements SD_Profiler_OutputStrategy_Interface {
     public function process(SD_Profiler_Frame $frame) {
-        echo $this->makeOutput($frame, 0);
+        echo "<table>{$this->makeOutput($frame, 0)}</table>";
     }
 
     private function makeOutput(SD_Profiler_Frame $frame, int $depth) {
-        return "<table style='margin-left:{$depth}0px'>
-            <tr>
-                <td>{$frame->getLabel()}</td>
-                <td>{$this->makeDuration($frame->getInclusiveDuration())}</td>
-                <td>{$this->makeDuration($frame->getExclusiveDuration())}</td>
-                <td>{$this->makeVars($frame->getVars())}</td>
-            </tr>
-        </table>" . implode('', array_map(
+        return "<tr>
+            <td style='padding-left: {$depth}0px'>{$frame->getLabel()}</td>
+            <td>{$this->makeDuration($frame->getInclusiveDuration())}</td>
+            <td>{$this->makeDuration($frame->getExclusiveDuration())}</td>
+            <td>{$this->makeVars($frame->getVars())}</td>
+        </tr>" . implode('', array_map(
             function ($frame) use ($depth) {
                 return $this->makeOutput($frame, $depth + 1);
             },
