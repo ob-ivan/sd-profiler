@@ -3,6 +3,7 @@
 class SD_Profiler_Profiler {
     private static $instance;
     private $isEnabled = false;
+    private $config;
     private $frameRoot;
     private $frameStack = [];
 
@@ -18,15 +19,8 @@ class SD_Profiler_Profiler {
 
     public function init(array $config) {
         $this->isEnabled = true;
-        register_shutdown_function(function () use ($config) {
-            while ($this->frameStack) {
-                $this->out();
-            }
-            foreach ($config as $strategyName => $strategyConfig) {
-                $outputStrategy = $this->getOutputStrategy($strategyName, $strategyConfig);
-                $outputStrategy->process($this->frameRoot);
-            }
-        });
+        $this->config = $config;
+        register_shutdown_function(function () { $this->shutdown(); });
         $this->in('root');
     }
 
@@ -56,6 +50,16 @@ class SD_Profiler_Profiler {
         $frame->out();
         if ($this->frameStack) {
             end($this->frameStack)->exitChildFrame($frame);
+        }
+    }
+
+    private function shutdown() {
+        while ($this->frameStack) {
+            $this->out();
+        }
+        foreach ($this->config as $strategyName => $strategyConfig) {
+            $outputStrategy = $this->getOutputStrategy($strategyName, $strategyConfig);
+            $outputStrategy->process($this->frameRoot);
         }
     }
 
