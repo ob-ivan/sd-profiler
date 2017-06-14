@@ -2,7 +2,7 @@
 
 class SD_Profiler_OutputStrategy_Append implements SD_Profiler_OutputStrategy_Interface {
     public function process(SD_Profiler_Frame $frame) {
-        echo "<table>{$this->makeOutput($frame, 0)}</table>";
+        echo "<table class='profiler'>{$this->makeOutput($frame, 0)}</table>";
     }
 
     private function makeOutput(SD_Profiler_Frame $frame, int $depth) {
