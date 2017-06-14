@@ -19,6 +19,9 @@ class SD_Profiler_Profiler {
     public function init(array $config) {
         $this->isEnabled = true;
         register_shutdown_function(function () use ($config) {
+            while ($this->frameStack) {
+                $this->out();
+            }
             foreach ($config as $strategyName => $strategyConfig) {
                 $outputStrategy = $this->getOutputStrategy($strategyName, $strategyConfig);
                 $outputStrategy->process($this->frameRoot);
@@ -42,16 +45,18 @@ class SD_Profiler_Profiler {
         }
     }
 
-    public function out(string $label) {
+    public function out(string $label = null) {
         if (!$this->isEnabled) {
             return;
         }
         $frame = array_pop($this->frameStack);
-        if ($frame->getLabel() !== $label) {
+        if ($label && $frame->getLabel() !== $label) {
             // TODO
         }
         $frame->out();
-        end($this->frameStack)->exitChildFrame($frame);
+        if ($this->frameStack) {
+            end($this->frameStack)->exitChildFrame($frame);
+        }
     }
 
     private function getOutputStrategy(string $name, $config): SD_Profiler_OutputStrategy_Interface {
