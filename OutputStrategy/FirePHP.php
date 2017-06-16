@@ -2,6 +2,9 @@
 
 class SD_Profiler_OutputStrategy_FirePHP implements SD_Profiler_OutputStrategy_Interface {
     public function init($config) {
+        $this->firephp()->setOptions([
+            'includeLineNumbers' => false,
+        ]);
         ob_start();
     }
 
@@ -11,12 +14,15 @@ class SD_Profiler_OutputStrategy_FirePHP implements SD_Profiler_OutputStrategy_I
     }
 
     private function fbRecursive(SD_Profiler_Frame $frame, int $depth) {
+        $data = [
+            'inclusive' => $this->makeDuration($frame->getInclusiveDuration()),
+            'exclusive' => $this->makeDuration($frame->getExclusiveDuration()),
+        ];
+        if ($frame->getVars()) {
+            $data['vars'] = $frame->getVars();
+        }
         $this->fb(
-            [
-                'inclusive' => $this->makeDuration($frame->getInclusiveDuration()),
-                'exclusive' => $this->makeDuration($frame->getExclusiveDuration()),
-                'vars' => $frame->getVars()
-            ],
+            $data,
             str_repeat('    ', $depth) . $frame->getLabel()
         );
         foreach ($frame->getChildren() as $child) {
@@ -25,10 +31,14 @@ class SD_Profiler_OutputStrategy_FirePHP implements SD_Profiler_OutputStrategy_I
     }
 
     private function fb($var, $label) {
-        FirePHP::getInstance(true)->log($var, $label);
+        $this->firephp()->log($var, $label);
     }
 
     private function makeDuration(float $duration) {
         return SD_Profiler_OutputStrategy_DurationFormatter::format($duration);
+    }
+
+    private function firephp() {
+        return FirePHP::getInstance(true);
     }
 }
