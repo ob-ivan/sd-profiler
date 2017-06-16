@@ -66,6 +66,7 @@ class SD_Profiler_Profiler {
     private function getOutputStrategy(string $name, $config): SD_Profiler_OutputStrategy_Interface {
         switch ($name) {
             case 'append': return new SD_Profiler_OutputStrategy_Append($config);
+            case 'firephp': return new SD_Profiler_OutputStrategy_FirePHP($config);
         }
     }
 }
