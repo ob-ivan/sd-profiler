@@ -1,6 +1,9 @@
 <?php
 
 class SD_Profiler_OutputStrategy_Append implements SD_Profiler_OutputStrategy_Interface {
+    public function init($config) {
+    }
+
     public function process(SD_Profiler_Frame $frame) {
         echo "<table class='profiler'>{$this->makeOutput($frame, 0)}</table>";
     }

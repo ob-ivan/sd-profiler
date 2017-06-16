@@ -20,7 +20,13 @@ class SD_Profiler_Profiler {
     public function init(array $config) {
         $this->isEnabled = true;
         $this->config = $config;
-        register_shutdown_function(function () { $this->shutdown(); });
+        foreach ($this->config as $strategyName => $strategyConfig) {
+            $outputStrategy = $this->getOutputStrategy($strategyName);
+            $outputStrategy->init($strategyConfig);
+        }
+        register_shutdown_function(function () {
+            $this->shutdown();
+        });
         $this->in('root');
     }
 
@@ -58,15 +64,15 @@ class SD_Profiler_Profiler {
             $this->out();
         }
         foreach ($this->config as $strategyName => $strategyConfig) {
-            $outputStrategy = $this->getOutputStrategy($strategyName, $strategyConfig);
+            $outputStrategy = $this->getOutputStrategy($strategyName);
             $outputStrategy->process($this->frameRoot);
         }
     }
 
-    private function getOutputStrategy(string $name, $config): SD_Profiler_OutputStrategy_Interface {
+    private function getOutputStrategy(string $name): SD_Profiler_OutputStrategy_Interface {
         switch ($name) {
-            case 'append': return new SD_Profiler_OutputStrategy_Append($config);
-            case 'firephp': return new SD_Profiler_OutputStrategy_FirePHP($config);
+            case 'append': return new SD_Profiler_OutputStrategy_Append();
+            case 'firephp': return new SD_Profiler_OutputStrategy_FirePHP();
         }
     }
 }

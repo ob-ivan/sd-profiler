@@ -1,12 +1,17 @@
 <?php
 
 class SD_Profiler_OutputStrategy_FirePHP implements SD_Profiler_OutputStrategy_Interface {
-    public function process(SD_Profiler_Frame $frame) {
-        $this->fb($frame, 0)
+    public function init($config) {
+        ob_start();
     }
 
-    private function fb(SD_Profiler_Frame $frame, int $depth) {
-        fb(
+    public function process(SD_Profiler_Frame $frame) {
+        $this->fbRecursive($frame, 0);
+        ob_flush();
+    }
+
+    private function fbRecursive(SD_Profiler_Frame $frame, int $depth) {
+        $this->fb(
             [
                 'inclusive' => $this->makeDuration($frame->getInclusiveDuration()),
                 'exclusive' => $this->makeDuration($frame->getExclusiveDuration()),
@@ -15,8 +20,12 @@ class SD_Profiler_OutputStrategy_FirePHP implements SD_Profiler_OutputStrategy_I
             str_repeat('    ', $depth) . $frame->getLabel()
         );
         foreach ($frame->getChildren() as $child) {
-            $this->fb($child, $depth + 1);
+            $this->fbRecursive($child, $depth + 1);
         }
+    }
+
+    private function fb($var, $label) {
+        FirePHP::getInstance(true)->log($var, $label);
     }
 
     private function makeDuration(float $duration) {
