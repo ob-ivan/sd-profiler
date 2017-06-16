@@ -24,9 +24,6 @@ class SD_Profiler_Profiler {
             $outputStrategy = $this->getOutputStrategy($strategyName);
             $outputStrategy->init($strategyConfig);
         }
-        register_shutdown_function(function () {
-            $this->shutdown();
-        });
         $this->in('root');
     }
 
@@ -59,7 +56,7 @@ class SD_Profiler_Profiler {
         }
     }
 
-    private function shutdown() {
+    public function dispatch() {
         while ($this->frameStack) {
             $this->out();
         }
