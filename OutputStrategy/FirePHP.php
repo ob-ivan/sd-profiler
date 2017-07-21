@@ -24,16 +24,18 @@ class SD_Profiler_OutputStrategy_FirePHP implements SD_Profiler_OutputStrategy_I
         if ($frame->getVars()) {
             $data = array_merge($data, $frame->getVars());
         }
-        $this->fb(
-            $data,
-            str_repeat('    ', $depth) . $frame->getLabel()
-        );
+        $indentedLabel = str_repeat('    ', $depth) . $frame->getLabel();
+        if ($data) {
+            $this->fb($data, $indentedLabel);
+        } else {
+            $this->fb($indentedLabel);
+        }
         foreach ($frame->getChildren() as $child) {
             $this->fbRecursive($child, $depth + 1);
         }
     }
 
-    private function fb($var, $label) {
+    private function fb($var, $label = null) {
         $this->firephp()->log($var, $label);
     }
 
