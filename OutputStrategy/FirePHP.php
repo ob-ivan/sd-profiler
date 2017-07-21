@@ -14,12 +14,15 @@ class SD_Profiler_OutputStrategy_FirePHP implements SD_Profiler_OutputStrategy_I
     }
 
     private function fbRecursive(SD_Profiler_Frame $frame, int $depth) {
-        $data = [
-            'inclusive' => $this->makeDuration($frame->getInclusiveDuration()),
-            'exclusive' => $this->makeDuration($frame->getExclusiveDuration()),
-        ];
+        $data = [];
+        if ($frame->isStarted()) {
+            $data = array_merge($data, [
+                'inclusive' => $this->makeDuration($frame->getInclusiveDuration()),
+                'exclusive' => $this->makeDuration($frame->getExclusiveDuration()),
+            ]);
+        }
         if ($frame->getVars()) {
-            $data['vars'] = $frame->getVars();
+            $data = array_merge($data, $frame->getVars());
         }
         $this->fb(
             $data,

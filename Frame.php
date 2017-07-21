@@ -16,6 +16,10 @@ class SD_Profiler_Frame {
         $this->vars = $vars;
     }
 
+    public function isStarted() {
+        return (bool)$this->inclusiveStart;
+    }
+
     public function in() {
         $now = microtime(true);
         $this->inclusiveStart = $now;
@@ -28,6 +32,10 @@ class SD_Profiler_Frame {
         $this->exclusiveDuration += $this->exclusiveEnd - $this->exclusiveStart;
         $this->inclusiveEnd = $now;
         $this->inclusiveDuration += $this->inclusiveEnd - $this->inclusiveStart;
+    }
+
+    public function addChildFrame(self $child) {
+        $this->children[] = $child;
     }
 
     public function enterChildFrame(self $child) {

@@ -27,6 +27,14 @@ class SD_Profiler_Profiler {
         $this->in('root');
     }
 
+    public function log(string $label, ...$vars) {
+        if (!$this->isEnabled) {
+            return;
+        }
+        $frame = new SD_Profiler_Frame($label, $vars);
+        end($this->frameStack)->addChildFrame($frame);
+    }
+
     public function in(string $label, ...$vars) {
         if (!$this->isEnabled) {
             return;
