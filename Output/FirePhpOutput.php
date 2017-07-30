@@ -2,6 +2,8 @@
 
 namespace SD\Profiler\Output;
 
+use SD\Profiler\Frame;
+
 class FirePhpOutput implements OutputInterface {
     public function init($config) {
         $this->firephp()->setOptions([
@@ -10,12 +12,12 @@ class FirePhpOutput implements OutputInterface {
         ob_start();
     }
 
-    public function process(SD_Profiler_Frame $frame) {
+    public function process(Frame $frame) {
         $this->fbRecursive($frame, 0);
         ob_flush();
     }
 
-    private function fbRecursive(SD_Profiler_Frame $frame, int $depth) {
+    private function fbRecursive(Frame $frame, int $depth) {
         $data = [];
         if ($frame->isStarted()) {
             $data = array_merge($data, [
@@ -46,6 +48,6 @@ class FirePhpOutput implements OutputInterface {
     }
 
     private function firephp() {
-        return FirePHP::getInstance(true);
+        return \FirePHP::getInstance(true);
     }
 }

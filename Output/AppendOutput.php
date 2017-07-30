@@ -2,15 +2,17 @@
 
 namespace SD\Profiler\Output;
 
+use SD\Profiler\Frame;
+
 class AppendOutput implements OutputInterface {
     public function init($config) {
     }
 
-    public function process(SD_Profiler_Frame $frame) {
+    public function process(Frame $frame) {
         echo "<table class='profiler'>{$this->makeOutput($frame, 0)}</table>";
     }
 
-    private function makeOutput(SD_Profiler_Frame $frame, int $depth) {
+    private function makeOutput(Frame $frame, int $depth) {
         return "<tr>
             <td style='padding-left: {$depth}0px'>{$frame->getLabel()}</td>
             <td>{$this->makeDuration($frame->getInclusiveDuration())}</td>

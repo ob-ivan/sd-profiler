@@ -37,7 +37,7 @@ class Profiler {
         if (!$this->isEnabled) {
             return;
         }
-        $frame = new SD_Profiler_Frame($label, $vars);
+        $frame = new Frame($label, $vars);
         end($this->frameStack)->addChildFrame($frame);
     }
 
@@ -45,7 +45,7 @@ class Profiler {
         if (!$this->isEnabled) {
             return;
         }
-        $frame = new SD_Profiler_Frame($label, $vars);
+        $frame = new Frame($label, $vars);
         $frame->in();
         if (empty($this->frameStack)) {
             $this->frameRoot = $frame;

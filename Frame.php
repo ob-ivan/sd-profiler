@@ -1,6 +1,8 @@
 <?php
 
-class SD_Profiler_Frame {
+namespace SD\Profiler;
+
+class Frame {
     private $label;
     private $vars;
     private $inclusiveStart;
