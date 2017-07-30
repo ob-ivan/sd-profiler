@@ -1,6 +1,6 @@
 <?php
 
-class SD_Profiler_Profiler {
+class SD\Profiler\Profiler {
     private static $instance;
     private $isEnabled = false;
     private $config;
