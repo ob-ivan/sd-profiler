@@ -1,6 +1,8 @@
 <?php
 
-class SD_Profiler_OutputStrategy_Append implements SD_Profiler_OutputStrategy_Interface {
+namespace SD\Profiler\Output;
+
+class AppendOutput implements OutputInterface {
     public function init($config) {
     }
 
@@ -23,7 +25,7 @@ class SD_Profiler_OutputStrategy_Append implements SD_Profiler_OutputStrategy_In
     }
 
     private function makeDuration(float $duration) {
-        return SD_Profiler_OutputStrategy_DurationFormatter::format($duration);
+        return DurationFormatter::format($duration);
     }
 
     private function makeVars(array $vars) {

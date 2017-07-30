@@ -1,6 +1,8 @@
 <?php
 
-class SD_Profiler_OutputStrategy_FirePHP implements SD_Profiler_OutputStrategy_Interface {
+namespace SD\Profiler\Output;
+
+class FirePhpOutput implements OutputInterface {
     public function init($config) {
         $this->firephp()->setOptions([
             'includeLineNumbers' => false,
@@ -40,7 +42,7 @@ class SD_Profiler_OutputStrategy_FirePHP implements SD_Profiler_OutputStrategy_I
     }
 
     private function makeDuration(float $duration) {
-        return SD_Profiler_OutputStrategy_DurationFormatter::format($duration);
+        return DurationFormatter::format($duration);
     }
 
     private function firephp() {

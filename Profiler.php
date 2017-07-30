@@ -1,6 +1,12 @@
 <?php
 
-class SD\Profiler\Profiler {
+namespace SD\Profiler;
+
+use SD\Profiler\Output\AppendOutput;
+use SD\Profiler\Output\FirePhpOutput;
+use SD\Profiler\Output\OutputInterface;
+
+class Profiler {
     private static $instance;
     private $isEnabled = false;
     private $config;
@@ -74,10 +80,10 @@ class SD\Profiler\Profiler {
         }
     }
 
-    private function getOutputStrategy(string $name): SD_Profiler_OutputStrategy_Interface {
+    private function getOutputStrategy(string $name): OutputInterface {
         switch ($name) {
-            case 'append': return new SD_Profiler_OutputStrategy_Append();
-            case 'firephp': return new SD_Profiler_OutputStrategy_FirePHP();
+            case 'append': return new AppendOutput();
+            case 'firephp': return new FirePhpOutput();
         }
     }
 }
