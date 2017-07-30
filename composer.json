@@ -1,0 +1,15 @@
+{
+    "name": "ob-ivan/sd-profiler",
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "firephp/firephp-core": "^0.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SD\\Profiler\\": ""
+        },
+        "files": ["init.php"]
+    }
+}
