@@ -8,8 +8,8 @@
     },
     "autoload": {
         "psr-4": {
-            "SD\\Profiler\\": ""
+            "SD\\Profiler\\": "src/"
         },
-        "files": ["init.php"]
+        "files": ["src/init.php"]
     }
 }
