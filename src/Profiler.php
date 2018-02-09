@@ -1,5 +1,4 @@
 <?php
-
 namespace SD\Profiler;
 
 use SD\Profiler\Output\AppendOutput;
