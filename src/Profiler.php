@@ -12,9 +12,6 @@ class Profiler {
     private $frameRoot;
     private $frameStack = [];
 
-    private function __construct() {
-    }
-
     public static function getInstance() {
         if (!self::$instance) {
             self::$instance = new self();

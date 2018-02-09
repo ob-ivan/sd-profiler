@@ -1,5 +1,6 @@
 <?php
+use SD\Profiler\Profiler;
 
 function profiler() {
-    return SD\Profiler\Profiler::getInstance();
+    return Profiler::getInstance();
 }
