@@ -8,7 +8,7 @@ use SD\Profiler\Output\OutputInterface;
 class Profiler {
     private static $instance;
     private $isEnabled = false;
-    private $config;
+    private $config = [];
     private $frameRoot;
     private $frameStack = [];
 
