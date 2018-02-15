@@ -5,21 +5,24 @@ use SD\Profiler\Output\AppendOutput;
 use SD\Profiler\Output\FirePhpOutput;
 use SD\Profiler\Output\OutputInterface;
 
-class Profiler {
+class Profiler
+{
     private static $instance;
     private $isEnabled = false;
     private $config = [];
     private $frameRoot;
     private $frameStack = [];
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (!self::$instance) {
             self::$instance = new self();
         }
         return self::$instance;
     }
 
-    public function init(array $config) {
+    public function init(array $config)
+    {
         $this->isEnabled = true;
         $this->config = $config;
         foreach ($this->config as $strategyName => $strategyConfig) {
@@ -29,7 +32,13 @@ class Profiler {
         $this->in('root');
     }
 
-    public function log(string $label, ...$vars) {
+    public function isEnabled(): bool
+    {
+        return $this->isEnabled;
+    }
+
+    public function log(string $label, ...$vars)
+    {
         if (!$this->isEnabled) {
             return;
         }
@@ -37,7 +46,8 @@ class Profiler {
         end($this->frameStack)->addChildFrame($frame);
     }
 
-    public function in(string $label, ...$vars) {
+    public function in(string $label, ...$vars)
+    {
         if (!$this->isEnabled) {
             return;
         }
@@ -52,7 +62,8 @@ class Profiler {
         }
     }
 
-    public function out(string $label = null) {
+    public function out(string $label = null)
+    {
         if (!$this->isEnabled) {
             return;
         }
@@ -66,7 +77,8 @@ class Profiler {
         }
     }
 
-    public function dispatch() {
+    public function dispatch()
+    {
         while ($this->frameStack) {
             $this->out();
         }
@@ -76,7 +88,8 @@ class Profiler {
         }
     }
 
-    private function getOutputStrategy(string $name): OutputInterface {
+    private function getOutputStrategy(string $name): OutputInterface
+    {
         switch ($name) {
             case 'append': return new AppendOutput();
             case 'firephp': return new FirePhpOutput();
