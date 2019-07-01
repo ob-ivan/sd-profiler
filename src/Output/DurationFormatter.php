@@ -3,7 +3,11 @@
 namespace SD\Profiler\Output;
 
 class DurationFormatter {
-    public static function format(float $duration) {
+    /**
+     * @param float $duration
+     * @return string
+     */
+    public static function format($duration) {
         return round($duration * 1000) . 'ms';
     }
 }

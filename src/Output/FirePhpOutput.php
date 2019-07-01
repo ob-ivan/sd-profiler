@@ -17,7 +17,12 @@ class FirePhpOutput implements OutputInterface {
         ob_flush();
     }
 
-    private function fbRecursive(Frame $frame, int $depth) {
+
+    /**
+     * @param Frame $frame
+     * @param int $depth
+     */
+    private function fbRecursive(Frame $frame, $depth) {
         $data = [];
         if ($frame->isStarted()) {
             $data = array_merge($data, [
@@ -43,7 +48,12 @@ class FirePhpOutput implements OutputInterface {
         $this->firephp()->log($var, $label);
     }
 
-    private function makeDuration(float $duration) {
+
+    /**
+     * @param float $duration
+     * @return string
+     */
+    private function makeDuration($duration) {
         return DurationFormatter::format($duration);
     }
 

@@ -12,7 +12,13 @@ class AppendOutput implements OutputInterface {
         echo "<table class='profiler'>{$this->makeOutput($frame, 0)}</table>";
     }
 
-    private function makeOutput(Frame $frame, int $depth) {
+
+    /**
+     * @param Frame $frame
+     * @param int $depth
+     * @return string
+     */
+    private function makeOutput(Frame $frame, $depth) {
         return "<tr>
             <td style='padding-left: {$depth}0px'>{$frame->getLabel()}</td>
             <td>{$this->makeDuration($frame->getInclusiveDuration())}</td>
@@ -26,7 +32,12 @@ class AppendOutput implements OutputInterface {
         ));
     }
 
-    private function makeDuration(float $duration) {
+
+    /**
+     * @param float $duration
+     * @return string
+     */
+    private function makeDuration($duration) {
         return DurationFormatter::format($duration);
     }
 
