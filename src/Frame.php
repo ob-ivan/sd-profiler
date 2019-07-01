@@ -13,7 +13,14 @@ class Frame {
     private $exclusiveDuration = 0;
     private $children = [];
 
-    public function __construct(string $label, array $vars) {
+
+    /**
+     * Frame constructor.
+     *
+     * @param string $label
+     * @param array $vars
+     */
+    public function __construct($label, array $vars) {
         $this->label = $label;
         $this->vars = $vars;
     }

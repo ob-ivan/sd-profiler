@@ -32,25 +32,50 @@ class Profiler
         $this->in('root');
     }
 
-    public function isEnabled(): bool
+    /**
+     * @return bool
+     */
+    public function isEnabled()
     {
         return $this->isEnabled;
     }
 
-    public function log(string $label, ...$vars)
+
+    /**
+     * @param string $label
+     * @param mixed ...$vars
+     */
+    public function log($label, $vars = null)
     {
         if (!$this->isEnabled) {
             return;
         }
+
+        // BEGIN PHP 5.5 compatibility
+        $vars = func_get_args();
+        array_shift($vars);
+        // END PHP 5.5 compatibility
+
         $frame = new Frame($label, $vars);
         end($this->frameStack)->addChildFrame($frame);
     }
 
-    public function in(string $label, ...$vars)
+
+    /**
+     * @param string $label
+     * @param mixed ...$vars
+     */
+    public function in($label, $vars = null)
     {
         if (!$this->isEnabled) {
             return;
         }
+
+        // BEGIN PHP 5.5 compatibility
+        $vars = func_get_args();
+        array_shift($vars);
+        // END PHP 5.5 compatibility
+
         $frame = new Frame($label, $vars);
         $frame->in();
         if (empty($this->frameStack)) {
@@ -62,7 +87,11 @@ class Profiler
         }
     }
 
-    public function out(string $label = null)
+
+    /**
+     * @param string|null $label
+     */
+    public function out($label = null)
     {
         if (!$this->isEnabled) {
             return;
@@ -88,7 +117,12 @@ class Profiler
         }
     }
 
-    private function getOutputStrategy(string $name): OutputInterface
+
+    /**
+     * @param string $name
+     * @return OutputInterface
+     */
+    private function getOutputStrategy($name)
     {
         switch ($name) {
             case 'append': return new AppendOutput();
