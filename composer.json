@@ -1,5 +1,6 @@
 {
     "name": "ob-ivan/sd-profiler",
+    "description": "Tag your code with profiler frames and calculate durations for each tag.",
     "config": {
         "sort-packages": true
     },
